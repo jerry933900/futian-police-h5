@@ -423,7 +423,7 @@ export default {
 }
 
 .filter-bar {
-  padding: 10px 15px;
+  /* padding: 10px 15px; */
 }
 
 .filter-items {
