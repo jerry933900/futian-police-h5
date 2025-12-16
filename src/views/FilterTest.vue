@@ -14,16 +14,30 @@
       <h3>筛选结果:</h3>
       <pre>{{ selectedFilters }}</pre>
     </div>
+
+    <!-- 审批意见列表（使用组件） -->
+    <ApprovalSteps :approvalSteps="approvalSteps" :currentStep="currentStep" />
+    
+    <!-- 测试动态高亮的按钮 -->
+    <div class="test-buttons">
+      <button v-for="(step, index) in approvalSteps" :key="index" 
+              @click="currentStep = index" 
+              :class="{ 'active-btn': currentStep === index }">
+        设置第{{ index + 1 }}步高亮 ({{ step.status }})
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import FilterBar from '@/components/FilterBar.vue'
+import ApprovalSteps from '@/components/ApprovalSteps.vue'
 
 export default {
   name: 'FilterTest',
   components: {
-    FilterBar
+    FilterBar,
+    ApprovalSteps
   },
   data() {
     return {
@@ -67,6 +81,35 @@ export default {
         { text: '交易成功', value: 'success' },
         { text: '交易失败', value: 'failed' },
         { text: '交易中', value: 'processing' }
+      ],
+      // 当前高亮的步骤索引
+      currentStep: 3,
+      // 审批步骤数据
+      approvalSteps: [
+        {
+          time: '2018-02-06',
+          status: '同意',
+          name: '张丽君',
+          reason: ''
+        },
+        {
+          time: '2018-02-07',
+          status: '拒绝',
+          name: '张丽君',
+          reason: '拒绝原因：原因原因原因，原因原因原因原因原因原因原因，原因原因，原因原因原因原因'
+        },
+        {
+          time: '',
+          status: '待审批',
+          name: '李审批',
+          reason: ''
+        },
+        {
+          time: '',
+          status: '结束',
+          name: '',
+          reason: ''
+        }
       ]
     }
   },
@@ -83,7 +126,7 @@ export default {
 <style scoped>
 .filter-test {
   padding: 20px;
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -97,5 +140,27 @@ export default {
 pre {
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+
+/* 测试按钮样式 */
+.test-buttons {
+  margin-top: 30px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.test-buttons button {
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.test-buttons button.active-btn {
+  background-color: #1989fa;
+  color: #ffffff;
 }
 </style>
